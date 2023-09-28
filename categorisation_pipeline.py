@@ -33,7 +33,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 category_list_df = pd.read_csv('full_categories_with_embeddings.csv')
 
 category_list = category_list_df['category'].tolist()
-print("Category list: ", category_list)
+# print("Category list: ", category_list)
 
 sample_companies_dataframe = pd.read_csv('sample_companies_dataframe.csv')
 
@@ -159,15 +159,20 @@ def predict_dataframe_selected_categories(categories_df, companies_df):
 ### RUN_MODE ###
 # RUN_MODE 1 will run the dataframe pipeline on the selected number of companies from sample_companies_dataframe
 # RUN_MODE 2 will run the single company pipeline on the specified company description
+# RUN_MODE 3 will run the dataframe pipeline with the specified categories dataframe. Does NOT save as csv.
 
-RUN_MODE = 2
+RUN_MODE = 3
 
 if RUN_MODE == 1:
     test_companies = sample_companies_dataframe.head(2)
     predictions_df = dataframe_pipeline('dataframe_pipeline_test.csv', test_companies)
-    predictions_df
+    print(predictions_df)
 elif RUN_MODE == 2:
     company_description = 'Orbital Materials is a company that develops and commercialises innovative technologies to keep Earth our home forever. Our solutions focus on clean air, water and energy with the help of AI and generative language models. We are committed to providing sustainable fuels, carbon capture and removal of harmful chemicals from the environment. Our team of experts is devoted to creating novel solutions to ensure Earth remains our home for the future.'
     predictions, predictions_from_original_list = single_company_pipeline(company_description)
     print("Predictions: ", predictions)
     print("Predictions from original list: ", predictions_from_original_list)
+elif RUN_MODE == 3:
+    test_companies = sample_companies_dataframe.head(2)
+    predictions_df = predict_dataframe_selected_categories(category_list_df, test_companies)
+    print(predictions_df)
